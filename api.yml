@@ -1,0 +1,16 @@
+-
+  module: post
+  afterCreate:
+    - afterCreate1
+    - afterCreate2
+  beforeCreate:
+    - beforeCreate1
+    - beforeCreate2
+-
+  module: author
+  afterCreate:
+    - afterCreate1
+    - afterCreate2
+  beforeCreate:
+    - beforeCreate1
+    - beforeCreate2

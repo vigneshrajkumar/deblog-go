@@ -2,11 +2,34 @@ package api
 
 import (
 	"database/sql"
+	"gopkg.in/yaml.v2"
+	"log"
 	"net/http"
+	"os"
 )
 
 type Server struct {
 	DB *sql.DB
+}
+
+func CreateServer(db *sql.DB) *Server {
+
+	var apiConf []Conf
+	apiConfFile, err := os.ReadFile("api.yml")
+	if err != nil {
+		log.Println(err)
+	}
+	err = yaml.Unmarshal(apiConfFile, &apiConf)
+	if err != nil {
+		log.Fatalf("Unmarshal: %v", err)
+	}
+	log.Println(apiConf)
+
+	server := Server{
+		DB: db,
+	}
+
+	return &server
 }
 
 func (s *Server) Run() error {

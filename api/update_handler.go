@@ -13,13 +13,17 @@ func getUpdateChain(module string) (func() chain.Chain, error) {
 	switch module {
 	case "post":
 		return chain.GetUpdatePostChain, nil
-	case "author":
-		//return chain.GetGetAllAuthor, nil
 	}
 	return nil, errors.New("unable to find update chain")
 }
 
 func (s *Server) updateHandler(w http.ResponseWriter, r *http.Request) {
+
+	if r.Method != "PUT" {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	log.Println(r.Method, r.RequestURI)
 
 	var body map[string]interface{}
 

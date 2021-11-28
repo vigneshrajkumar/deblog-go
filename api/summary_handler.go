@@ -12,16 +12,17 @@ func getSummaryChain(module string) (func() chain.Chain, error) {
 	switch module {
 	case "post":
 		return chain.GetSummaryPostChain, nil
-		//case "author":
-		//	return chain.GetListAuthorsChain, nil
 	}
 	return nil, errors.New("unable to find fetch chain")
 }
 
 func (s *Server) summaryHandler(w http.ResponseWriter, r *http.Request) {
 
-	log.Println(r.Body)
-	log.Println(r.RequestURI)
+	if r.Method != "GET" {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	log.Println(r.Method, r.RequestURI)
 
 	module := r.URL.Query().Get("module")
 	id := r.URL.Query().Get("id")

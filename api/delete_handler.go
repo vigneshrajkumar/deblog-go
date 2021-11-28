@@ -12,16 +12,17 @@ func getDeleteChain(module string) (func() chain.Chain, error) {
 	switch module {
 	case "post":
 		return chain.GetDeletePostChain, nil
-	case "author":
-		//return chain.GetGetAllAuthor, nil
 	}
 	return nil, errors.New("unable to find fetch chain")
 }
 
 func (s *Server) deleteHandler(w http.ResponseWriter, r *http.Request) {
 
-	log.Println(r.Body)
-	log.Println(r.RequestURI)
+	if r.Method != "DELETE" {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	log.Println(r.Method, r.RequestURI)
 
 	module := r.URL.Query().Get("module")
 	id := r.URL.Query().Get("id")

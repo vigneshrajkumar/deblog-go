@@ -20,8 +20,11 @@ func getListChain(module string) (func() chain.Chain, error) {
 
 func (s *Server) listHandler(w http.ResponseWriter, r *http.Request) {
 
-	log.Println(r.Body)
-	log.Println(r.RequestURI)
+	if r.Method != "GET" {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	log.Println(r.Method, r.RequestURI)
 
 	module := r.URL.Query().Get("module")
 	log.Println("module: ", module)

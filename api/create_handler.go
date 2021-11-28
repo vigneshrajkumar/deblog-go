@@ -21,6 +21,12 @@ func getCreateChain(module string) (func() chain.Chain, error) {
 
 func (s *Server) createHandler(w http.ResponseWriter, r *http.Request) {
 
+	if r.Method != "POST" {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	log.Println(r.Method, r.RequestURI)
+
 	var body map[string]interface{}
 
 	bodyBytes, err := io.ReadAll(r.Body)
